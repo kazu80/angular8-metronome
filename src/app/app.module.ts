@@ -11,6 +11,8 @@ import {MetronomeCommon} from './common/metronome.common';
 import {SoundService} from './service/sound.service';
 import {BeatService} from './service/beat.service';
 import {TempoService} from './service/tempo.service';
+import { TempoControlComponent } from './metronome/tempo-control/tempo-control.component';
+import { TempoControlButtonComponent } from './metronome/tempo-control-button/tempo-control-button.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import {TempoService} from './service/tempo.service';
     TopComponent,
     TempoDisplayComponent,
     BeatComponent,
-    SoundComponent
+    SoundComponent,
+    TempoControlComponent,
+    TempoControlButtonComponent
   ],
   imports: [
     BrowserModule,
