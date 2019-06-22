@@ -13,6 +13,11 @@ import {BeatService} from './service/beat.service';
 import {TempoService} from './service/tempo.service';
 import { TempoControlComponent } from './metronome/tempo-control/tempo-control.component';
 import { TempoControlButtonComponent } from './metronome/tempo-control-button/tempo-control-button.component';
+import { VolumeComponent } from './metronome/volume/volume.component';
+import { RunComponent } from './metronome/run/run.component';
+import {VolumeService} from './service/volume.service';
+import {CounterService} from './service/counter.service';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -22,9 +27,13 @@ import { TempoControlButtonComponent } from './metronome/tempo-control-button/te
     BeatComponent,
     SoundComponent,
     TempoControlComponent,
-    TempoControlButtonComponent
+    TempoControlButtonComponent,
+    VolumeComponent,
+    RunComponent
   ],
   imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
     BrowserModule,
     AppRoutingModule
   ],
@@ -32,7 +41,9 @@ import { TempoControlButtonComponent } from './metronome/tempo-control-button/te
     MetronomeCommon,
     BeatService,
     SoundService,
-    TempoService
+    TempoService,
+    VolumeService,
+    CounterService
   ],
   bootstrap: [AppComponent]
 })

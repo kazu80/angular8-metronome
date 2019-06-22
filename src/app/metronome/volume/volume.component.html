@@ -1,0 +1,14 @@
+<div class="volume">
+  <div class="name">VOLUME</div>
+  <div class="display">
+    <ul id="volume">
+      <li
+              *ngFor="let volume of volumes"
+              [class.active]="volume == selectedVolume"
+      >{{volume.label}}
+      </li>
+    </ul>
+  </div>
+  <button id="button-volume-down" class="metronome-button prev" (click)="onClick('prev')"></button>
+  <button id="button-volume-up" class="metronome-button next" (click)="onClick('next')"></button>
+</div>

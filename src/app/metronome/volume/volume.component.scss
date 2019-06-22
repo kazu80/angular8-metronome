@@ -1,0 +1,21 @@
+.prev {
+  background-image : url("/assets/images/arrow-left.svg");
+}
+
+.next {
+  background-image : url("/assets/images/arrow-right.svg");
+}
+
+.name {
+  font-size  : 20px;
+  text-align : left;
+}
+
+.volume {
+  .display {
+    li {
+      padding        : 0;
+      letter-spacing : -1px;
+    }
+  }
+}
