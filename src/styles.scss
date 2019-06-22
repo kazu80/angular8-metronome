@@ -1,1 +1,68 @@
 /* You can add global styles to this file, and also import other style files */
+@font-face {
+  font-family : 'digital';
+  src         : url("assets/fonts/LettersLaughingbyQuantizedandCalibrated.ttf") format("truetype");
+}
+
+@import "scss/_bootstrap.scss";
+
+* {
+  margin     : 0;
+  padding    : 0;
+  box-sizing : border-box;
+}
+
+html,
+body {
+  position         : relative;
+  width            : 100vw;
+  height           : 100vh;
+  background-color : #fefefe;
+  font-family      : 'Montserrat', sans-serif;
+}
+
+body {
+  font-family      : "HelveticaNeue-Thin", "HelveticaNeue-Light", "HelveticaNeue", Helvetica, Arial, sans-serif;
+  background-color : #1976d2;
+}
+
+main {
+  width                     : 100vw;
+  height                    : 100vh;
+  background-image          : url('assets/images/angular_background.png');
+  background-position       : 2vw 0;
+  background-size           : 38%;
+  animation-name            : main_background;
+  animation-duration        : 10000ms;
+  animation-iteration-count : infinite;
+  animation-timing-function : linear;
+}
+
+@keyframes main_background {
+  from {
+    background-position : 2vw 0;
+  }
+
+  to {
+    background-position : 40vw 0;
+  }
+}
+
+.container {
+  position: relative;
+  max-width: 768px;
+  text-align: center;
+  text-align: -webkit-center;
+}
+
+.padding-0 {
+  padding: 0;
+}
+
+@import "scss/_header.scss";
+@import "scss/_metoronome.scss";
+
+.footer {
+  height : 67px;
+  width  : 100%;
+}

@@ -1,0 +1,14 @@
+<div class="beat">
+  <div class="name">BEAT</div>
+  <div class="display">
+    <ul id="beat">
+      <li
+              *ngFor="let beat of beats"
+              [class.active]="beat === selectedBeat"
+      >{{beat.id}}
+      </li>
+    </ul>
+  </div>
+  <button id="button-beat-down" class="metronome-button prev" (click)="onClick('prev')"></button>
+  <button id="button-beat-up" class="metronome-button next" (click)="onClick('next')"></button>
+</div>

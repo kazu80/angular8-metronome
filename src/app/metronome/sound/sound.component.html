@@ -1,0 +1,14 @@
+<div class="sound">
+  <div class="name">SOUND</div>
+  <div class="display">
+    <ul id="sound">
+      <li
+              *ngFor="let sound of sounds"
+              [class.active]="sound === selectedSound"
+      >{{sound.id}}
+      </li>
+    </ul>
+  </div>
+  <button id="button-sound-down" class="metronome-button prev" (click)="onClick('prev')"></button>
+  <button id="button-sound-up" class="metronome-button next" (click)="onClick('next')"></button>
+</div>

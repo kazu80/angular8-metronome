@@ -1,0 +1,413 @@
+.metronome {
+    margin-top: 20px;
+
+    .row {
+        margin: 0;
+    }
+}
+
+.metronome-content {
+    position: relative;
+    height: 200px;
+}
+
+@media (max-width:$screen-xs-max) {
+    .metronome-content {
+        height: inherit;
+    }
+}
+
+.metronome-content.top {
+    background-color: #eee;
+}
+
+.metronome-content.middle {
+    background-color: #fff;
+}
+
+.metronome-content.bottom {
+    background-color: #eee;
+}
+
+/**
+ * column
+ */
+.column {
+    position: relative;
+    height: 100%;
+    padding: 0;
+}
+
+@media (max-width:$screen-xs-max) {
+    .column {
+        height: inherit;
+        margin-top: 20px;
+    }
+}
+
+/**
+ * column-content
+ */
+@mixin column-content {
+    position: absolute;
+    top : 50%;
+    left: 50%;
+    width: 90%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.tempo,
+.sound,
+.tempo-slider,
+.tempo-control,
+.volume,
+.run,
+.beat {
+    @include column-content;
+}
+
+@media (max-width:$screen-xs-max) {
+    .tempo,
+    .sound,
+    .tempo-slider,
+    .tempo-control,
+    .volume,
+    .run,
+    .beat {
+        position: inherit;
+        top : inherit;
+        left: inherit;
+        transform: translate(0%, 0%);
+    }
+}
+
+.tempo {
+    p {
+        font-size: 11rem;
+        line-height: 125px;
+    }
+
+    @media (max-width:$screen-xs-max) {
+        p {
+            font-size: 8.2rem;
+        }
+    }
+}
+
+@media (max-width:$screen-xs-max) {
+    .tempo {
+        position: inherit;
+        top : inherit;
+        left: inherit;
+        transform: translate(0%, 0%);
+        width: 60%;
+    }
+}
+
+/**
+ * display
+ */
+$color-display-num : #c8c8c8;
+$color-display-num-active : #565656;
+$font-display-num : 'digital', cursive;
+
+.display {
+    border: 3px solid #626262;
+    text-align: center;
+    background: -webkit-linear-gradient(90deg, #75a348 0%, #69bb6f 67%, #64c682 100%);
+    background: -moz-linear-gradient(90deg, #75a348 0%, #69bb6f 67%, #64c682 100%);
+    background: -o-linear-gradient(90deg, #75a348 0%, #69bb6f 67%, #64c682 100%);
+    background: -ms-linear-gradient(90deg, #75a348 0%, #69bb6f 67%, #64c682 100%);
+    background: linear-gradient(0deg, #75a348 0%, #69bb6f 67%, #64c682 100%);
+
+    p {
+        color: $color-display-num-active;
+        font-family: $font-display-num;
+        text-align: right;
+    }
+
+    ul {
+        font-size: 0;
+        padding: 0;
+        margin: 0;
+        font-family: $font-display-num;
+        color: $color-display-num;
+    }
+
+    @media (max-width:$screen-xs-max) {
+        ul {
+            margin-top: 2px;
+        }
+    }
+
+    li {
+        display: inline;
+        font-size: 3.2rem;
+        padding-right: 5px;
+    }
+
+    @media (max-width:$screen-xs-max) {
+        li {
+            font-size: 1.8rem;
+        }
+    }
+
+    li:last-child {
+        padding-right: 0;
+    }
+
+    .active {
+        color: $color-display-num-active;
+    }
+}
+
+.tempo {
+    .display {
+        height: 120px;
+
+        p {
+            padding-top: 5px;
+        }
+    }
+}
+
+.sound,
+.beat {
+    .display {
+        height: 45px;
+    }
+
+    @media (max-width:$screen-xs-max) {
+        .display {
+            height: 30px;
+        }
+    }
+}
+
+.sound {
+    .display {
+        li {
+            padding-right: 20px;
+        }
+
+        li:last-child {
+            padding-right: 0;
+        }
+    }
+}
+
+.volume {
+    .display {
+        li {
+            font-size: 1.4rem;
+            line-height: 40px;
+            color: $color-display-num;
+        }
+
+        @media (max-width:$screen-xs-max) {
+            li {
+                font-size : 1.2rem;
+                line-height: 26px;
+            }
+        }
+
+        li.active {
+            color: $color-display-num-active;
+        }
+    }
+
+    @media (max-width:$screen-xs-max) {
+        .display {
+        }
+    }
+}
+
+/**
+ * button
+ */
+.run-button {
+    width: 90%;
+    height: 164px;
+    border: none;
+    background-color: #ea5550;
+    background-image: url("/images/play.svg");
+    background-repeat: no-repeat;
+    background-size: 30%;
+    background-position: 50%;
+}
+
+@media (max-width:$screen-xs-max) {
+    .run-button {
+        height : 124px;
+        font-size: 1.2rem;
+    }
+}
+
+@mixin metoronome-button-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@mixin transition-timing-function($timing) {
+    -webkit-transition-timing-function: $timing;
+    -moz-transition-timing-function: $timing;
+    -o-transition-timing-function: $timing;
+    transition-timing-function: $timing;
+}
+
+@mixin animation($animation) {
+    -webkit-animation: $animation;
+    -moz-animation: $animation;
+    -o-animation: $animation;
+    animation: $animation;
+}
+
+/**
+ * $keyframes \ gelatine
+ **/
+@keyframes gelatine{
+    from,to{
+        -webkit-transform:scale(1, 1);
+        transform:scale(1, 1)
+    }
+    25%{
+        -webkit-transform:scale(.9, 1.1);
+        transform:scale(.9, 1.1)
+    }
+    50%{
+        -webkit-transform:scale(1.1, .9);
+        transform:scale(1.1, .9)
+    }
+    75%{
+        -webkit-transform:scale(.95, 1.05);
+        transform:scale(.95, 1.05)
+    }
+    from,to{
+        -webkit-transform:scale(1, 1);
+        transform:scale(1, 1)
+    }
+    25%{
+        -webkit-transform:scale(.9, 1.1);
+        transform:scale(.9, 1.1)
+    }
+    50%{
+        -webkit-transform:scale(1.1, .9);
+        transform:scale(1.1, .9)
+    }75%{
+         -webkit-transform:scale(.95, 1.05);
+         transform:scale(.95, 1.05)
+     }
+}
+
+@-webkit-keyframes gelatine{
+    from,to{
+        -webkit-transform:scale(1, 1);
+        transform:scale(1, 1)
+    }
+    25%{
+        -webkit-transform:scale(.9, 1.1);
+        transform:scale(.9, 1.1)
+    }
+    50%{
+        -webkit-transform:scale(1.1, .9);
+        transform:scale(1.1, .9)
+    }
+    75%{
+        -webkit-transform:scale(.95, 1.05);
+        transform:scale(.95, 1.05)
+    }
+    from,to{
+        -webkit-transform:scale(1, 1);
+        transform:scale(1, 1)
+    }
+    25%{
+        -webkit-transform:scale(.9, 1.1);
+        transform:scale(.9, 1.1)
+    }
+    50%{
+        -webkit-transform:scale(1.1, .9);
+        transform:scale(1.1, .9)
+    }
+    75%{
+         -webkit-transform:scale(.95, 1.05);
+         transform:scale(.95, 1.05)
+    }
+}
+
+.metronome-button {
+    position: relative;
+    margin-top: 10px;
+    border: 2px solid #000;
+    border-radius: 8px;
+    background-color:  #fff;
+    width: 45%;
+    height: 74px;
+
+    &.tempo-button {
+        margin-top: 0;
+
+        &.prev {
+            background-image: url("assets/images/minus.svg");
+            background-repeat: no-repeat;
+            background-size: 30%;
+            background-position: 50%;
+
+            &:after {
+
+            }
+        }
+
+        &.next {
+            background-image: url("assets/images/plus.svg");
+            background-repeat: no-repeat;
+            background-size: 30%;
+            background-position: 50%;
+
+            &:after {
+
+            }
+        }
+    }
+
+    &.prev {
+        float: left;
+        background-image: url("assets/images/arrow-left.svg");
+        background-repeat: no-repeat;
+        background-size: 30%;
+        background-position: 50%;
+
+        &:after {
+
+        }
+    }
+
+    &.next {
+        float: right;
+        background-image: url("assets/images/arrow-right.svg");
+        background-repeat: no-repeat;
+        background-size: 30%;
+        background-position: 50%;
+
+        &:after {
+
+        }
+    }
+
+    &:hover, &:focus {
+        //box-shadow: 0 0 0 2px #fff, 0 0 0 4px #000;
+        @include transition-timing-function(cubic-bezier(.6,4,.3,.8));
+        @include animation (gelatine .5s 1);
+    }
+}
+
+/**
+ *
+ */
+.tempo-slider {
+    input {
+        margin-top: 20px;
+    }
+}

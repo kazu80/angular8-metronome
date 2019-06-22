@@ -1,7 +1,5 @@
-
-
-@import "../scss/_bootstrap.scss";
-@import "../scss/header";
+@import "../../../scss/_bootstrap.scss";
+@import "../../../scss/header";
 
 @mixin menu-icon {
   border : none;
@@ -26,7 +24,7 @@
 
 .menu.on.recording::after {
   @include menu-icon-after;
-  background-image : url("../assets/images/mic.svg");
+  background-image : url("/assets/images/mic.svg");
 }
 
 .menu.on.stop-watch {
@@ -36,7 +34,7 @@
 
 .menu.on.stop-watch::after {
   @include menu-icon-after;
-  background-image : url("../assets/images/stopwatch.svg");
+  background-image : url("/assets/images/stopwatch.svg");
 }
 
 .menu.on.version-1 {
@@ -46,5 +44,5 @@
 
 .menu.on.version-1::after {
   @include menu-icon-after;
-  background-image : url("../assets/images/metronome.svg");
+  background-image : url("/assets/images/metronome.svg");
 }

@@ -1,0 +1,20 @@
+#beat {
+  li {
+    padding        : 0;
+    font-size      : 3rem;
+    letter-spacing : -5px;
+  }
+}
+
+.prev {
+  background-image : url("/assets/images/arrow-left.svg");
+}
+
+.next {
+  background-image : url("/assets/images/arrow-right.svg");
+}
+
+.name {
+  font-size  : 20px;
+  text-align : left;
+}

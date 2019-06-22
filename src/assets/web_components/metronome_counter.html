@@ -1,0 +1,218 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="metronome-counter">
+    <template>
+        <style>
+            :host {
+                position : relative;
+                top      : 4px;
+                left     : 10px;
+                float    : left;
+            }
+
+            .display {
+                display        : table-cell;
+                padding        : 0 10px;
+                height         : 55px;
+                width          : 100px;
+                border         : 2px solid #626262;
+                vertical-align : middle;
+                text-align     : right;
+                background     : linear-gradient(0deg, #75a348 0%, #69bb6f 67%, #64c682 100%);
+            }
+
+            .display p {
+                margin      : 0;
+                padding-top : 8px;
+                font-family : "digital", cursive;
+                font-size   : 3.2rem;
+            }
+
+            .message,
+            #container ::slotted(.message) {
+                position    : absolute;
+                top         : 80px;
+                left        : -15vw;
+                width       : 100%;
+                font-size   : 4vw;
+                z-index     : 1000;
+                white-space : nowrap;
+                text-shadow : 2px 2px 10px #aaaaaa;
+                color       : #cc2222;
+                font-weight : bold;
+            }
+        </style>
+        <div class="display">
+            <p>{{count}}</p>
+        </div>
+        <div class="message"></div>
+    </template>
+
+    <script>
+        class MetronomeCounter extends Polymer.Element {
+            static get is () { return 'metronome-counter'; }
+
+            static get properties () {
+                return {
+                    count: {
+                        type    : Number,
+                        value   : 0,
+                        observer: '_observerCount',
+                    }
+                }
+            }
+
+            _observerCount (val) {
+                const el = this.shadowRoot.querySelector ('.message');
+
+                const opening = new Audio ('/assets/sound/opening.mp3');
+                opening.volume = 0.4;
+
+                opening.addEventListener ('ended', function () {
+                    if (val !== 0) {
+                        this.currentTime = 4;
+                        this.play ();
+                    }
+                }, false);
+
+                const audio = new Audio ('/assets/sound/cheer.mp3');
+
+                const interval = 30;
+
+                switch (val) {
+                    case 0:
+                        el.innerHTML = '';
+                        break;
+
+                    case interval + 1:
+                        opening.play ();
+
+                        break;
+                    case interval + 10:
+                        el.innerHTML = 'みなさん、こんにちわ';
+                        break;
+
+                    case interval + 20:
+                        el.innerHTML = 'メトロノーム川上です。';
+                        break;
+
+                    case interval + 30:
+                        el.innerHTML = '今回、メトロノームに';
+                        break;
+
+                    case interval + 35:
+                        el.innerHTML = '新機能を付けたんですが、';
+                        break;
+
+                    case interval + 40:
+                        el.innerHTML = 'わかります？？';
+                        break;
+
+                    case interval + 50:
+                        el.innerHTML = 'そうです！！';
+                        break;
+
+                    case interval + 55:
+                        el.innerHTML = '今見ていただいている';
+                        break;
+
+                    case interval + 60:
+                        el.innerHTML = 'このカウンターと';
+                        break;
+
+                    case interval + 70:
+                        el.innerHTML = 'メッセージ表示です。';
+                        break;
+
+                    case interval + 80:
+                        el.innerHTML = 'おもしろいですか？';
+                        break;
+
+                    case interval + 90:
+                        el.innerHTML = 'え...';
+                        break;
+
+                    case interval + 100:
+                        el.innerHTML = '「微妙」って思った？？';
+                        break;
+
+                    case interval + 110:
+                        el.innerHTML = 'T_T';
+                        break;
+
+                    case interval + 112:
+                        el.innerHTML = 'T_T　T_T';
+                        break;
+
+                    case interval + 114:
+                        el.innerHTML = 'T_T　T_T　T_T';
+                        break;
+
+                    case interval + 120:
+                        el.innerHTML = 'そろそろ付ける機能を';
+                        break;
+
+                    case interval + 130:
+                        el.innerHTML = '考えるの限界なんです';
+                        break;
+
+                    case interval + 140:
+                        el.innerHTML = 'でも';
+                        break;
+
+                    case interval + 150:
+                        el.innerHTML = 'この新機能は…';
+                        break;
+
+                    case interval + 160:
+                        el.innerHTML = 'Web Componentで作りました';
+
+                        audio.play ();
+                        break;
+
+                    case interval + 170:
+                        audio.play ();
+                        break;
+
+                    case interval + 180:
+                        el.innerHTML = 'Angular x WebComponent';
+
+                        audio.play ();
+                        break;
+
+                    case interval + 182:
+                        el.style.color = '#228';
+
+                        audio.play ();
+                        break;
+
+                    case interval + 184:
+                        el.style.color = '#282';
+
+                        audio.play ();
+                        break;
+
+                    case interval + 186:
+                        el.style.color = '#c22';
+
+                        audio.play ();
+                        break;
+
+                    case interval + 190:
+                        el.innerHTML = '以上！';
+
+                        audio.play ();
+                        break;
+
+                    case interval + 200:
+                        opening.pause ();
+                        opening.currentTime = 4;
+                        break;
+                }
+            }
+        }
+
+        customElements.define (MetronomeCounter.is, MetronomeCounter);
+    </script>
+
+</dom-module>

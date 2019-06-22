@@ -1,0 +1,37 @@
+<dom-module id="metronome-header-title">
+    <template>
+        <style>
+            .header-title {
+                padding-left : 12px;
+                float        : left;
+            }
+
+            .header-title p {
+                color          : #ffffff;
+                font-size      : 3.6rem;
+                line-height    : 29px;
+                font-weight    : 100;
+                letter-spacing : 5px;
+            }
+
+            @media (max-width : 767px) {
+                .header-title p {
+                    font-size : 2rem;
+                }
+            }
+
+        </style>
+        <div class="header-title">
+            <p>
+                <slot></slot>
+            </p>
+        </div>
+    </template>
+    <script>
+        class MetronomeHeaderTitle extends Polymer.Element {
+            static get is () { return 'metronome-header-title'; }
+        }
+
+        customElements.define (MetronomeHeaderTitle.is, MetronomeHeaderTitle);
+    </script>
+</dom-module>
