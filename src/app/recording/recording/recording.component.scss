@@ -1,0 +1,21 @@
+.recording {
+    padding : 60px 0;
+}
+
+.btn-recording {
+    padding             : 40px;
+    border-radius       : 50%;
+    background-image    : url("/assets/images/rec.svg");
+    background-repeat   : no-repeat;
+    background-position : center;
+    background-size     : 50%;
+
+    &:focus {
+        outline : none;
+    }
+}
+
+.title {
+    margin-bottom : 40px;
+    font-size     : 60px;
+}
