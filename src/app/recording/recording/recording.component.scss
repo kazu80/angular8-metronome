@@ -1,0 +1,29 @@
+.recording {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: calc(100% - 67px);
+}
+
+.btn-recording {
+  padding: 0;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-image: url("/assets/images/rec.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 50%;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.title {
+  margin-bottom: 40px;
+  font-size: 60px;
+  color: white;
+}

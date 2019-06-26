@@ -1,7 +1,11 @@
 .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
     height: 67px;
     width: 100%;
-    background-color: #dcdcdc;
     clear: both;
 
     .header-title {
@@ -23,85 +27,34 @@
         }
     }
 
-    @mixin menu {
-        position: relative;
-        height: 60px;
-        width: 60px;
-        margin: 3px 12px 3px 0;
-        border: 3px solid #313131;
-        border-radius: 50%;
-        background-color: #fff;
-        float: right;
-        opacity: 0.8;
-        transition: opacity 0.15s;
+    .header-links {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 180px;
+
+        .menu {
+            height: 47px;
+            width: 47px;
+            border: 2px solid #313131;
+            border-radius: 50%;
+            background-color: #fff;
+            transition: opacity 0.15s ease-out;
+            opacity: 1;
+
+            &:hover {
+                opacity: .8;
+            }
+        }
     }
 
-    .menu {
-        @include menu;
-    }
-
-    .notification {
-        @include menu;
-    }
 
     @media (max-width:$screen-xs-max) {
-        .menu,
-        .notification {
+        .menu {
             height   : 40px;
             width    : 40px;
             margin-top: 10px;
-        }
-    }
-
-    .menu:hover,
-    .notification:hover {
-        opacity: 1;
-    }
-
-    .menu.off,
-    .notification.off {
-        background-color: #b5b5b5;
-    }
-
-    @mixin notification-content {
-        display: inline-block;
-        content : ' ';
-        position: absolute;
-        width: 22px;
-        height: 30px;
-        background-size: contain;
-        background-repeat: no-repeat;
-        vertical-align: middle;
-        top : 12px;
-    }
-
-    .notification.on:after {
-        @include notification-content;
-        background: url("/assets/images/pic_02.png");
-        left: 16px;
-    }
-
-    @media (max-width:$screen-xs-max) {
-        .notification.on:after {
-            position: inherit;
-            top : inherit;
-            left: inherit;
-            margin-top: 2px;
-        }
-    }
-
-    .notification.off:after {
-        @include notification-content;
-        content: url("/assets/images/pic_03.png");
-        left: 14px;
-    }
-
-    @media (max-width:$screen-xs-max) {
-        .notification.off:after {
-            position: inherit;
-            top : inherit;
-            left: inherit;
-            margin-top: 2px;
         }
     }
 }

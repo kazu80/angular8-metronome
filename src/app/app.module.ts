@@ -18,6 +18,7 @@ import { RunComponent } from './metronome/run/run.component';
 import {VolumeService} from './service/volume.service';
 import {CounterService} from './service/counter.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { RecordingComponent } from './recording/recording/recording.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     TempoControlComponent,
     TempoControlButtonComponent,
     VolumeComponent,
-    RunComponent
+    RunComponent,
+    RecordingComponent
   ],
   imports: [
     BrowserModule,
