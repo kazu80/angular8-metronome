@@ -1,27 +1,28 @@
-
-
 @import "../scss/_bootstrap.scss";
 @import "../scss/header";
 
 @mixin menu-icon {
+  position: relative;
   border : none;
   cursor : pointer;
 }
 
 @mixin menu-icon-after {
-  display             : inline-block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   content             : '';
   width               : 60px;
   height              : 60px;
   background-repeat   : no-repeat;
   background-position : center;
-  background-size     : 50%;
+  background-size: 40%;
 
 }
 
 .menu.on.recording {
   @include menu-icon;
-  background-color : #dcdcdc;
 }
 
 .menu.on.recording::after {
@@ -31,7 +32,6 @@
 
 .menu.on.stop-watch {
   @include menu-icon;
-  background-color : #dcdcdc;
 }
 
 .menu.on.stop-watch::after {
@@ -41,7 +41,6 @@
 
 .menu.on.version-1 {
   @include menu-icon;
-  background-color : #dcdcdc;
 }
 
 .menu.on.version-1::after {

@@ -10,6 +10,10 @@
   margin     : 0;
   padding    : 0;
   box-sizing : border-box;
+
+  &:focus {
+    outline: none;
+  }
 }
 
 html,
@@ -23,13 +27,12 @@ body {
 
 body {
   font-family      : "HelveticaNeue-Thin", "HelveticaNeue-Light", "HelveticaNeue", Helvetica, Arial, sans-serif;
-  // background-color : #1976d2;
+  background-color: #E23030;
 }
 
 main {
   width                     : 100vw;
   height                    : 100vh;
-  // background-image          : url('assets/images/angular_background.png');
   background-position       : 2vw 0;
   background-size           : 38%;
   animation-name            : main_background;
