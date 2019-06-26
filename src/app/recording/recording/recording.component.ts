@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {animate, keyframes, state, style, transition, trigger} from '@angular/animations';
 import {SoundService} from '../../service/sound.service';
 import {RecordingService} from '../../service/recording.service';
+import {Subscription} from 'rxjs';
 
 declare var MediaRecorder: any;
 
@@ -41,11 +42,12 @@ declare var MediaRecorder: any;
     ])
   ]
 })
-export class RecordingComponent implements OnInit {
+export class RecordingComponent implements OnInit, OnDestroy {
   recordingState: string;
   mediaRecorder: any;
   recordedChunks: any[] = [];
   countDownInterval: any;
+  recordingSubscription: Subscription;
 
   constructor(
       private soundService: SoundService,
@@ -91,7 +93,7 @@ export class RecordingComponent implements OnInit {
         err => console.log('The following error occurred: ' + err.name),
     );
 
-    this.recordingService.recording.subscribe((res: string) => {
+    this.recordingSubscription = this.recordingService.recording.subscribe((res: string) => {
       switch (res) {
         case 'rec':
           let count = 3;
@@ -144,5 +146,9 @@ export class RecordingComponent implements OnInit {
 
   private onClick() {
     this.recordingService.switchRecording();
+  }
+
+  public ngOnDestroy(): void {
+    this.recordingSubscription.unsubscribe();
   }
 }
