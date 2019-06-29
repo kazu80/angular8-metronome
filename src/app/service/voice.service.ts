@@ -258,6 +258,8 @@ export class VoiceService {
 
             this.speech.lang = this.searchLang('Japanese').code;
 
+            // this.speech.pitch = 2;
+
         } else {
             console.error('Your browser does not support the Web Speech API');
         }
@@ -277,8 +279,9 @@ export class VoiceService {
         window.speechSynthesis.resume();
     }
 
-    public speak(text: string, lang?: string): void {
+    public speak(text: string, pitch?: number, lang?: string): void {
         this.speech.text = text;
+        this.speech.pitch = pitch;
         window.speechSynthesis.speak(this.speech);
     }
 
