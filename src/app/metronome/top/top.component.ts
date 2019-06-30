@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {TempoService} from '../../service/tempo.service';
+import {SpeechService} from '../../service/speech.service';
 
 @Component({
   selector: 'app-top',
@@ -8,11 +9,16 @@ import {TempoService} from '../../service/tempo.service';
 })
 export class TopComponent implements OnInit {
 
-  constructor(private tempoService: TempoService) {
-
-  }
+  constructor(
+      private tempoService: TempoService,
+      private speechService: SpeechService
+  ) {}
 
   ngOnInit() {
+
+    this.speechService.getResult().subscribe(res => {
+      console.log(res);
+    });
   }
 
   getTempo(): number {
@@ -21,5 +27,15 @@ export class TopComponent implements OnInit {
 
   getAnimation(): string {
     return this.tempoService.animation;
+  }
+
+  mouseup(): void {
+    console.log('mouseup');
+    this.speechService.startListening();
+  }
+
+  mousedown(): void {
+    console.log('mousedown');
+    this.speechService.stopListening();
   }
 }
