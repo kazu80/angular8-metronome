@@ -135,7 +135,7 @@ export class RunComponent implements OnInit {
 
 
           if (count % beatCount === 0) {
-              this.voiceService.speak(countBeat.toString(), isThree ? 2 : 0);
+              this.voiceService.speak(countBeat.toString(), isThree ? 2 : 0, 'rand');
               countBeat++;
           }
 

@@ -279,9 +279,18 @@ export class VoiceService {
         window.speechSynthesis.resume();
     }
 
+    static landLang(): Lang {
+        return LANGS[Math.floor(Math.random() * LANGS.length)];
+    }
+
     public speak(text: string, pitch?: number, lang?: string): void {
         this.speech.text = text;
         this.speech.pitch = pitch;
+
+        if (lang === 'rand') {
+            this.speech.lang = VoiceService.landLang().code;
+        }
+
         window.speechSynthesis.speak(this.speech);
     }
 
