@@ -5,6 +5,7 @@ import {Beat, BeatService} from '../../service/beat.service';
 import {Sound, SoundService} from '../../service/sound.service';
 import {Volume, VolumeService} from '../../service/volume.service';
 import {CounterService} from '../../service/counter.service';
+import {VoiceService} from "../../service/voice.service";
 
 @Component({
   selector   : 'app-run',
@@ -45,11 +46,14 @@ export class RunComponent implements OnInit {
   audioTempo: HTMLAudioElement;
   audioBeat: HTMLAudioElement;
 
-  constructor(private volumeService: VolumeService,
-              private beatService: BeatService,
-              private soundService: SoundService,
-              private tempoService: TempoService,
-              private counterService: CounterService) {
+    constructor(
+        private volumeService: VolumeService,
+        private beatService: BeatService,
+        private soundService: SoundService,
+        private tempoService: TempoService,
+        private counterService: CounterService,
+        private voiceService: VoiceService
+    ) {
   }
 
   ngOnInit() {
@@ -115,9 +119,26 @@ export class RunComponent implements OnInit {
 
     // Run
     let count: any = 1;
-    this.interval  = setInterval(() => {
-      count % beatCount === 0 ? this.audioBeat.play() : this.audioTempo.play();
-      count++;
+      let countBeat = 1;
+      this.interval = setInterval(() => {
+          count % beatCount === 0 ? this.audioBeat.play() : this.audioTempo.play();
+          count++;
+
+          let isThree = false;
+          if (countBeat % 3 === 0) {
+              isThree = true;
+          }
+
+          if (/3/.test(countBeat.toString())) {
+              isThree = true;
+          }
+
+
+          if (count % beatCount === 0) {
+              this.voiceService.speak(countBeat.toString(), isThree ? 2 : 0, 'rand');
+              countBeat++;
+          }
+
 
       // tempo counter
       this.counterService.inclementCount();
