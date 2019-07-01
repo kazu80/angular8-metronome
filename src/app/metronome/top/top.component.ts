@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {TempoService} from '../../service/tempo.service';
-import {SpeechService} from '../../service/speech.service';
+import {SpeechResult, SpeechService} from '../../service/speech.service';
 
 @Component({
   selector: 'app-top',
@@ -15,9 +15,9 @@ export class TopComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-
-    this.speechService.getResult().subscribe(res => {
+    this.speechService.getResult().subscribe((res: SpeechResult) => {
       console.log(res);
+
     });
   }
 
@@ -30,12 +30,10 @@ export class TopComponent implements OnInit {
   }
 
   mouseup(): void {
-    console.log('mouseup');
-    this.speechService.startListening();
+    this.speechService.stopListening();
   }
 
   mousedown(): void {
-    console.log('mousedown');
-    this.speechService.stopListening();
+    this.speechService.startListening();
   }
 }

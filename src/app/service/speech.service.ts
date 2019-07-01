@@ -10,6 +10,13 @@ const LISTENING_STATE = Object.freeze({
   DISABLED: 'disabled'
 });
 
+export class SpeechResult {
+  speechResult: string;
+  confidence: number;
+  isFinal: boolean;
+  sourceEvent: SpeechRecognitionEvent;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -26,18 +33,20 @@ export class SpeechService {
     this.speech = new speechRecognition();
     // this.speech.lang = 'en-US';
     this.speech.lang = 'ja-JP';
-    this.speech.onresult = this.onSpeechResult;
+    this.speech.onresult = this.onSpeechResult.bind(this);
     this.speech.onspeechend = this.onSpeechEnd;
     this.speech.onerror = this.onSpeechError;
   }
 
-  onSpeechResult(event) {
-    const result = {
+  onSpeechResult(event: SpeechRecognitionEvent) {
+    const result: SpeechResult = {
       speechResult : event.results[0][0].transcript,
       confidence : event.results[0][0].confidence,
       isFinal : event.results[0].isFinal,
       sourceEvent: event
     };
+
+    console.log(result);
 
     this.setResult(result);
 
@@ -52,10 +61,10 @@ export class SpeechService {
 
   onSpeechError(event) {
     this.state = LISTENING_STATE.IDLE;
-    console.log(event);
+    console.error(event);
   }
 
-  setResult(value: object) {
+  setResult(value) {
     this.result.next(value);
   }
 
@@ -72,6 +81,7 @@ export class SpeechService {
 
   public stopListening() {
     if (this.state !== LISTENING_STATE.LISTENING) { return; }
+
     this.speech.stop();
   }
 }
