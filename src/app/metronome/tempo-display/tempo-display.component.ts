@@ -30,13 +30,28 @@ export class TempoDisplayComponent implements OnInit {
       view: this.dom.querySelector('#tempo-display')
     });
 
-    app.renderer.backgroundColor = 0xffffff;
+    app.renderer.backgroundColor = 0x666666;
 
     const style   = new PIXI.TextStyle({
-      fontFamily: 'digital',
-      fontSize: 110
+      fontFamily: 'Arial',
+      fontSize: 300,
+      fontWeight: 'bold',
+      fill: ['#ffffff', '#00ff99'], // gradient
+      stroke: '#4a1850',
+      strokeThickness: 5,
+      dropShadow: true,
+      dropShadowColor: '#000000',
+      dropShadowBlur: 4,
+      dropShadowAngle: Math.PI / 6,
+      dropShadowDistance: 6,
+      wordWrap: true,
+      wordWrapWidth: 1840,
+      align: 'right'
     });
     this.tempoPixiText = new PIXI.Text(this.tempoValue, style);
+
+    this.tempoPixiText.x = 0;
+    this.tempoPixiText.y = 0;
 
     app.stage.addChild(this.tempoPixiText);
   }
