@@ -285,7 +285,10 @@ export class VoiceService {
 
     public speak(text: string, pitch?: number, lang?: string): void {
         this.speech.text = text;
-        this.speech.pitch = pitch;
+
+        if (pitch) {
+            this.speech.pitch = pitch;
+        }
 
         if (lang === 'rand') {
             this.speech.lang = VoiceService.landLang().code;
