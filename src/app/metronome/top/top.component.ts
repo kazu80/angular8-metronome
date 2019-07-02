@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {TempoService} from '../../service/tempo.service';
 import {SpeechResult, SpeechService} from '../../service/speech.service';
+import {VoiceService} from '../../service/voice.service';
 
 @Component({
   selector: 'app-top',
@@ -11,12 +12,19 @@ export class TopComponent implements OnInit {
 
   constructor(
       private tempoService: TempoService,
-      private speechService: SpeechService
+      private speechService: SpeechService,
+      private voiceService: VoiceService
   ) {}
 
   ngOnInit() {
     this.speechService.getResult().subscribe((res: SpeechResult) => {
       console.log(res);
+        switch (res.speechResult) {
+            case 'こんにちは':
+
+                this.voiceService.speak('こんにちわ');
+                break;
+        }
 
     });
   }

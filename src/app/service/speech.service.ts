@@ -46,8 +46,6 @@ export class SpeechService {
       sourceEvent: event
     };
 
-    console.log(result);
-
     this.setResult(result);
 
     if (result.isFinal) {
