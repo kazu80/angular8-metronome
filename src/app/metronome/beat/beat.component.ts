@@ -13,24 +13,32 @@ export class BeatComponent implements OnInit {
 
   constructor(private common: MetronomeCommon,
               private service: BeatService) {
+
+    this.service.getSelectedBeat().subscribe((value: Beat) => {
+      this.selectedBeat = value;
+    });
   }
 
   ngOnInit() {
     this.beats                 = this.service.getValues();
-    this.selectedBeat          = this.beats[3];
-    this.service.selectedValue = this.selectedBeat;
+    // this.selectedBeat          = this.beats[3];
+    // this.service.selectedValue = this.selectedBeat;
+
+    this.service.setSelectedBeat(4);
   }
 
   private onClick(type: string) {
     switch (type) {
       case 'prev':
-        this.selectedBeat = this.common.prev(this.beats, this.selectedBeat);
-        break;
+          this.service.prev();
+        // this.selectedBeat = this.common.prev(this.beats, this.selectedBeat);
+          break;
       case 'next':
-        this.selectedBeat = this.common.next(this.beats, this.selectedBeat);
+        this.service.next();
+        // this.selectedBeat = this.common.next(this.beats, this.selectedBeat);
         break;
     }
 
-    this.service.selectedValue = this.selectedBeat;
+    // this.service.selectedValue = this.selectedBeat;
   }
 }
