@@ -65,8 +65,9 @@ export class SpeechService {
   }
 
   onEnd(e) {
-    console.log('onend', e, this);
-    this.speech.start();
+    if (this.speech.state === undefined) {
+      this.speech.start();
+    }
     this.state = LISTENING_STATE.IDLE;
   }
 
@@ -79,21 +80,16 @@ export class SpeechService {
   }
 
   public startListening() {
-    console.log('start', this.state);
     if (this.state === LISTENING_STATE.LISTENING) { return; }
 
-    console.log('foo');
-
     this.state = LISTENING_STATE.LISTENING;
-    this.speech.start();
-
+    if (this.speech.state === 'idle' || this.speech.state === undefined ) {
+      this.speech.start();
+    }
   }
 
   public stopListening() {
-    console.log('stop', this.state);
     if (this.state !== LISTENING_STATE.LISTENING) { return; }
-
-    console.log('bar');
 
     this.speech.stop();
   }
