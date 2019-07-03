@@ -26,22 +26,17 @@ export class BeatService {
     this.selectedBeat = new Subject();
   }
 
-  getValues(): Beat[] {
+  static getValues(): Beat[] {
     return BEATS;
   }
 
-  get selectedValue(): Beat {
-    return this._selectedValue;
-  }
+  setSelectedBeat(numberArray: number) {
+    const index = numberArray - 1;
+    const beat = BEATS[index];
 
-  set selectedValue(value: Beat) {
-    this._selectedValue = value;
-  }
-
-  setSelectedBeat(value: number) {
-    if (BEATS[value - 1] !== undefined) {
-      this._selectedValue = BEATS[value - 1];
-      this.selectedBeat.next(BEATS[value - 1]);
+    if (beat !== undefined) {
+      this._selectedValue = beat;
+      this.selectedBeat.next(beat);
     }
   }
 
@@ -50,18 +45,20 @@ export class BeatService {
   }
 
   next() {
-    console.log('next');
     const index = this.getIndexOfSelected();
-    console.log(index);
-    if (index) {
-      this.setSelectedBeat(index + 2);
+
+    if (index !== undefined) {
+      const numberArray = index + 1;
+      this.setSelectedBeat(numberArray + 1);
     }
   }
 
   prev() {
     const index = this.getIndexOfSelected();
-    if (index) {
-      this.setSelectedBeat(index - 1);
+
+    if (index !== undefined) {
+      const numberArray = index + 1;
+      this.setSelectedBeat(numberArray - 1);
     }
   }
 
