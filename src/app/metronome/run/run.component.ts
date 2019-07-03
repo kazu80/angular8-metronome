@@ -125,7 +125,7 @@ export class RunComponent implements OnInit {
         let count: any = 1;
         let countBeat = 1;
         this.interval = setInterval(() => {
-            count % beatCount === 0 ? this.audioBeat.play() : this.audioTempo.play();
+            count % this.beat.beat === 0 ? this.audioBeat.play() : this.audioTempo.play();
             count++;
 
             let isThree = false;
@@ -138,7 +138,7 @@ export class RunComponent implements OnInit {
             }
 
 
-            if (count % beatCount === 0) {
+            if (count % this.beat.beat === 0) {
                 this.voiceService.speak(countBeat.toString(), isThree ? 2 : 0, 'rand');
                 countBeat++;
             }
