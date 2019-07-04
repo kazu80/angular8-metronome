@@ -3,17 +3,16 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    margin: 0 auto;
     padding: 0 20px;
-    height: 67px;
     width: 100%;
-    clear: both;
+    max-width: 1024px;
+    height: 67px;
 
     .header-title {
-        padding: 19px 0 19px 12px;
-        float: left;
 
         p {
-            color: #fff;
+            color: #000;
             font-size: 3.6rem;
             line-height: 29px;
             font-weight: 100;

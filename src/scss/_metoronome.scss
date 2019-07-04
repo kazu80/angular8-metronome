@@ -17,17 +17,12 @@
     }
 }
 
-.metronome-content.top {
-    background-color: #eee;
+.metronome-content {
+    .top {}
+    .middle {}
+    .bottom {}
 }
 
-.metronome-content.middle {
-    background-color: #fff;
-}
-
-.metronome-content.bottom {
-    background-color: #eee;
-}
 
 /**
  * column
