@@ -47,3 +47,12 @@
   @include menu-icon-after;
   background-image : url("../assets/images/metronome.svg");
 }
+
+.menu.on.version-8 {
+  @include menu-icon;
+}
+
+.menu.on.version-8::after {
+  @include menu-icon-after;
+  background-image : url("../assets/images/metronome.svg");
+}

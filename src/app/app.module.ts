@@ -19,6 +19,7 @@ import {VolumeService} from './service/volume.service';
 import {CounterService} from './service/counter.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { RecordingComponent } from './recording/recording/recording.component';
+import { Top8Component } from './metronome8/top8/top8.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { RecordingComponent } from './recording/recording/recording.component';
     TempoControlButtonComponent,
     VolumeComponent,
     RunComponent,
-    RecordingComponent
+    RecordingComponent,
+    Top8Component
   ],
   imports: [
     BrowserModule,
