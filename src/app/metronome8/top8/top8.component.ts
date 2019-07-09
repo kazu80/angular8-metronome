@@ -8,18 +8,24 @@ declare var PIXI: any;
   styleUrls: ['./top8.component.scss']
 })
 export class Top8Component implements OnInit {
-
   private dom: HTMLElement;
+  private displayHeight: number;
+  private displayWidth: number;
+  private displayColor: string;
 
   constructor(el: ElementRef) {
     this.dom = el.nativeElement;
+
+    this.displayHeight = window.innerHeight - 67;
+    this.displayWidth  = window.innerWidth;
+    this.displayColor = '0xf2f2f2';
   }
 
   ngOnInit() {
     const app = new PIXI.Application({
-      width: window.innerWidth,
-      height: window.innerHeight - 67,
-      backgroundColor: 0xf2f2f2
+      width: this.displayWidth,
+      height: this.displayHeight,
+      backgroundColor: this.displayColor
     });
 
     this.dom.querySelector('#display').appendChild(app.view);
