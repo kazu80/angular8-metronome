@@ -1,0 +1,6 @@
+@import "../../../scss/variables";
+
+.display {
+  width: 100%;
+  height: calc(100% - #{$height-height});
+}

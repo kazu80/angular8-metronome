@@ -19,7 +19,7 @@ export class TopComponent implements OnInit {
   ngOnInit() {
     this.speechService.getResult().subscribe((res: SpeechResult) => {
       console.log(res);
-        switch (res.speechResult) {
+      switch (res.speechResult) {
             case 'こんにちは':
 
                 this.voiceService.speak('こんにちわ');
