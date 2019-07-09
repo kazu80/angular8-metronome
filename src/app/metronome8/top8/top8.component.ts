@@ -64,6 +64,10 @@ export class Top8Component implements OnInit {
     }
 
     initializeAnime() {
+        const sound = PIXI.sound.Sound.from('/assets/sound/bgm.mp3');
+        sound.play();
+
+
         const filterBlur = new PIXI.filters.BlurFilter();
 
         this.app = new PIXI.Application({
