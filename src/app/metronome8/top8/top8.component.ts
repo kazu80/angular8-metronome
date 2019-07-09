@@ -17,11 +17,27 @@ export class Top8Component implements OnInit {
 
   ngOnInit() {
     const app = new PIXI.Application({
-      view: this.dom.querySelector('#display')
+      width: window.innerWidth,
+      height: window.innerHeight - 67,
+      backgroundColor: 0xf2f2f2
     });
 
-    app.renderer.backgroundColor = 0x666666;
+    this.dom.querySelector('#display').appendChild(app.view);
 
+    app.loader.add('logo', '/assets/images/angular8/logo.png').load(
+        (loader, resorces) => {
+          const logo = new PIXI.Sprite(resorces.logo.texture);
+
+          logo.x = app.renderer.width / 2;
+          logo.y = app.renderer.height / 2;
+
+          // Rotate around the center
+          logo.anchor.x = 0.5;
+          logo.anchor.y = 0.5;
+
+          // Add the bunny to the scene we are building
+          app.stage.addChild(logo);
+        }
+    );
   }
-
 }
