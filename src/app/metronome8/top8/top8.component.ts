@@ -19,8 +19,11 @@ export class Top8Component implements OnInit {
     private scene: Subject<number>;
     private app: any;
     private logo: any;
+    private text01: any;
+    private text02: any;
     private ticker: any;
     private handleTicker: object;
+    private sceneTime: number;
 
     constructor(el: ElementRef) {
         this.scene = new Subject();
@@ -32,6 +35,8 @@ export class Top8Component implements OnInit {
         this.displayColor = '0xf2f2f2';
 
         this.logoImagePath = '/assets/images/angular8/logo.png';
+
+        this.sceneTime = 3000;
     }
 
     ngOnInit() {
@@ -46,6 +51,12 @@ export class Top8Component implements OnInit {
                 case 3:
                     this.scene3();
                     break;
+                case 4:
+                    this.scene4();
+                    break;
+                case 5:
+                    this.scene5();
+                    break;
             }
         });
 
@@ -53,6 +64,8 @@ export class Top8Component implements OnInit {
     }
 
     initializeAnime() {
+        const filterBlur = new PIXI.filters.BlurFilter();
+
         this.app = new PIXI.Application({
             width: this.displayWidth,
             height: this.displayHeight,
@@ -65,7 +78,6 @@ export class Top8Component implements OnInit {
             (loader, resorces) => {
                 this.logo = new PIXI.Sprite(resorces.logo.texture);
 
-                const filterBlur = new PIXI.filters.BlurFilter();
                 this.logo.filters = [filterBlur];
 
                 this.app.stage.addChild(this.logo);
@@ -73,6 +85,29 @@ export class Top8Component implements OnInit {
                 this.scene.next(1);
             }
         );
+
+        // Text01
+        const style01 = new PIXI.TextStyle({
+            fontFamily: 'Noto Sans JP',
+            fontSize: 36,
+            fontWeight: '700',
+        });
+
+        this.text01 = new PIXI.Text('PRODUCED BY', style01);
+        this.text01.filters = [filterBlur];
+        this.text01.alpha = 0;
+        this.app.stage.addChild(this.text01);
+
+        // Text02
+        const style02 = new PIXI.TextStyle({
+            fontFamily: 'Noto Sans JP',
+            fontSize: 36,
+            fontWeight: '400',
+        });
+        this.text02 = new PIXI.Text('KAZUYOSHI KAWAKAMI', style02);
+        this.text02.filters = [filterBlur];
+        this.text02.alpha = 0;
+        this.app.stage.addChild(this.text02);
     }
 
     scene1() {
@@ -91,6 +126,20 @@ export class Top8Component implements OnInit {
         this.logo.alpha = 0;
 
         this.scene.next(2);
+
+        // text01
+        this.text01.x = this.app.renderer.width / 2;
+        this.text01.y = this.app.renderer.height / 2 - 50;
+        this.text01.anchor.x = 0.5;
+        this.text01.anchor.y = 0.5;
+        this.text01.alpha = 0;
+
+        // text02
+        this.text02.x = this.app.renderer.width / 2;
+        this.text02.y = this.app.renderer.height / 2 - 50 + 55;
+        this.text02.anchor.x = 0.5;
+        this.text02.anchor.y = 0.5;
+        this.text02.alpha = 0;
     }
 
 
@@ -116,7 +165,7 @@ export class Top8Component implements OnInit {
                 this.ticker.remove(this.handleTicker);
                 setTimeout(() => {
                     this.scene.next(3);
-                }, 1000);
+                }, this.sceneTime);
             }
         };
 
@@ -144,8 +193,94 @@ export class Top8Component implements OnInit {
                 this.ticker.remove(this.handleTicker);
 
                 setTimeout(() => {
+                    this.scene.next(4);
+                }, this.sceneTime);
+            }
+        };
+
+        this.ticker.add(this.handleTicker);
+    }
+
+    scene4() {
+        this.ticker = this.app.ticker;
+        const filter01 = this.text01.filters[0];
+        const filter02 = this.text02.filters[0];
+
+        this.handleTicker = (delta) => {
+            if (this.text01.scale.x > 1) {
+                this.text01.scale.x -= 0.05;
+                this.text01.scale.y -= 0.05;
+            }
+
+            if (this.text02.scale.x > 1) {
+                this.text02.scale.x -= 0.05;
+                this.text02.scale.y -= 0.05;
+            }
+
+            if (this.text01.alpha < 1) {
+                this.text01.alpha += 0.2;
+            }
+
+            if (this.text02.alpha < 1) {
+                this.text02.alpha += 0.2;
+            }
+
+            if (filter01.blur > 0) {
+                filter01.blur -= 0.4;
+            }
+
+            if (filter02.blur > 0) {
+                filter02.blur -= 0.4;
+            }
+
+            if (this.text01.alpha >= 1 && filter01.blur <= 0) {
+                this.ticker.remove(this.handleTicker);
+                setTimeout(() => {
+                    this.scene.next(5);
+                }, this.sceneTime);
+            }
+        };
+
+        this.ticker.add(this.handleTicker);
+    }
+
+    scene5() {
+        const filter01 = this.text01.filters[0];
+        const filter02 = this.text02.filters[0];
+
+        this.handleTicker = (delta) => {
+            if (this.text01.scale.x < 1) {
+                this.text01.scale.x += 0.05;
+                this.text01.scale.y += 0.05;
+            }
+
+            if (this.text02.scale.x < 1) {
+                this.text02.scale.x += 0.05;
+                this.text02.scale.y += 0.05;
+            }
+
+            if (this.text01.alpha > 0) {
+                this.text01.alpha -= 0.1;
+            }
+
+            if (this.text02.alpha > 0) {
+                this.text02.alpha -= 0.1;
+            }
+
+            if (filter01.blur < 10) {
+                filter01.blur += 2;
+            }
+
+            if (filter02.blur < 10) {
+                filter02.blur += 2;
+            }
+
+            if (this.text01.alpha <= 0) {
+                this.ticker.remove(this.handleTicker);
+
+                setTimeout(() => {
                     this.scene.next(1);
-                }, 1000);
+                }, this.sceneTime);
             }
         };
 
