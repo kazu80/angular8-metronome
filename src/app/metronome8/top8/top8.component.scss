@@ -1,2 +1,9 @@
 @import "../../../scss/variables";
 
+.skip {
+  position: absolute;
+  top: $heightHeight + 15px;
+  right: 100px;
+  font-size: 22px;
+  font-weight: 500;
+}

@@ -1,5 +1,6 @@
 import {Component, ElementRef, OnDestroy, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
+import {Router} from '@angular/router';
 
 declare var PIXI: any;
 
@@ -27,7 +28,10 @@ export class Top8Component implements OnInit, OnDestroy {
     private sceneTime: number;
     private sound: any;
 
-    constructor(el: ElementRef) {
+    constructor(
+        el: ElementRef,
+        private router: Router
+    ) {
         this.scene = new Subject();
 
         this.dom = el.nativeElement;
@@ -94,8 +98,11 @@ export class Top8Component implements OnInit, OnDestroy {
             singleInstance: true,
             preload: true,
             speed: 1.3,
+            complete: (sound) => {
+                // complete callbackが呼ばれない
+                this.scene.next(6);
+            },
             loaded: (err, sound) => {
-
                 this.app.loader.add('logo', this.logoImagePath).load(
                     (loader, resorces) => {
                         this.logo = new PIXI.Sprite(resorces.logo.texture);
@@ -107,9 +114,6 @@ export class Top8Component implements OnInit, OnDestroy {
                         this.scene.next(1);
                     }
                 );
-            },
-            complete: () => {
-                this.scene.next(6);
             }
         });
 
@@ -312,8 +316,8 @@ export class Top8Component implements OnInit, OnDestroy {
                 this.ticker.remove(this.handleTicker);
 
                 setTimeout(() => {
-                    this.scene.next(1);
-                }, this.sceneTime);
+                    this.scene.next(6);
+                }, 4000);
             }
         };
 
@@ -321,6 +325,6 @@ export class Top8Component implements OnInit, OnDestroy {
     }
 
     scene6() {
-
+        this.router.navigate(['/version8/play']);
     }
 }
