@@ -2,6 +2,8 @@ import {Component, ElementRef, OnInit} from '@angular/core';
 import {BeatService} from "../../service/beat.service";
 import {TempoService} from "../../service/tempo.service";
 import {RunService} from "../../service/run.service";
+import {SpeechResult, SpeechService} from "../../service/speech.service";
+import {VoiceService} from "../../service/voice.service";
 
 declare var PIXI: any;
 
@@ -28,7 +30,9 @@ export class Play8Component implements OnInit {
       el: ElementRef,
       private beatService: BeatService,
       private tempoService: TempoService,
-      private runService: RunService
+      private runService: RunService,
+      private speechService: SpeechService,
+      private voiceService: VoiceService
   ) {
     this.dom = el.nativeElement;
 
@@ -48,45 +52,36 @@ export class Play8Component implements OnInit {
     const filterBlur = new PIXI.filters.BlurFilter();
     filterBlur.blur = 10;
 
-    // Text01
-    const style01 = new PIXI.TextStyle({
+    // Text "TEMPO"
+    this.text01 = this.displayText('TEMPO', {
       fontFamily: 'Noto Sans JP',
       fontSize: 60,
       fontWeight: '700',
       fill: 'white',
     });
-
-    this.text01 = new PIXI.Text('TEMPO', style01);
-    this.text01.alpha = 0;
-    this.text01.filters = [filterBlur];
+    this.text01.y = this.app.renderer.height / 2  + 100;
     this.app.stage.addChild(this.text01);
 
-    this.text01.x = this.app.renderer.width / 2;
-    this.text01.y = this.app.renderer.height / 2 + 100;
-    this.text01.anchor.x = 0.5;
-    this.text01.anchor.y = 0.5;
-
-    // Text02
-    const style02 = new PIXI.TextStyle({
+    // Text "80"
+    this.text02 = this.displayText('80', {
       fontFamily: 'Noto Sans JP',
       fontSize: 220,
       fontWeight: '700',
       fill: 'white',
     });
-
-
-    this.text02 = new PIXI.Text('80', style02);
-    this.text02.alpha = 0;
-    this.text02.filters = [filterBlur];
+    this.text02.y = this.app.renderer.height / 2 - 30;
     this.app.stage.addChild(this.text02);
 
-    this.text02.x = this.app.renderer.width / 2;
-    this.text02.y = this.app.renderer.height / 2 - 30;
-    this.text02.anchor.x = 0.5;
-    this.text02.anchor.y = 0.5;
+    // Text "80" change
+    this.numberChange();
 
-    //
+    // SPEECH
+    this.speechInit();
+  }
+
+  numberChange() {
     this.ticker = this.app.ticker;
+
     this.tempoService.getTempo().subscribe(val => {
 
       this.handleTicker = (delta) => {
@@ -108,6 +103,56 @@ export class Play8Component implements OnInit {
       };
 
       this.ticker.add(this.handleTicker);
+    });
+  }
+
+  displayText(val: string, style: object) {
+    const filterBlur = new PIXI.filters.BlurFilter();
+    filterBlur.blur = 10;
+
+    const text = new PIXI.Text(val, style);
+    text.alpha = 0;
+    text.filters = [filterBlur];
+
+    text.x = this.app.renderer.width / 2;
+    text.y = this.app.renderer.height / 2;
+    text.anchor.x = 0.5;
+    text.anchor.y = 0.5;
+
+    return text;
+  }
+
+  speechInit() {
+    this.speechService.getResult().subscribe((res: SpeechResult) => {
+      console.log(res);
+      switch (res.speechResult) {
+        case 'hello':
+
+          this.voiceService.speak('こんにちわ');
+          break;
+
+        case 'temp':
+          this.displayTempo();
+          break;
+
+        case 'disappear':
+        case 'disappeared':
+          this.disappearTempo();
+          break;
+
+        case 'play':
+          this.play();
+          break;
+
+        case 'stop':
+          this.stop();
+          break;
+
+        default:
+          this.question(res.speechResult);
+          break;
+      }
+
     });
   }
 
@@ -180,5 +225,17 @@ export class Play8Component implements OnInit {
     };
 
     this.ticker.add(this.handleTicker);
+  }
+
+  mouseup(): void {
+    this.speechService.stopListening();
+  }
+
+  mousedown(): void {
+    this.speechService.startListening();
+  }
+
+  question(val: string) {
+
   }
 }
