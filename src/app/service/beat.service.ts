@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import {Subject} from 'rxjs';
 
 export class Beat {
   id: number;
@@ -19,19 +20,51 @@ const BEATS: Beat[] = [
 @Injectable()
 export class BeatService {
   private _selectedValue: Beat;
+  private selectedBeat: Subject<Beat>;
 
   constructor() {
+    this.selectedBeat = new Subject();
   }
 
-  getValues(): Beat[] {
+  static getValues(): Beat[] {
     return BEATS;
   }
 
-  get selectedValue(): Beat {
-    return this._selectedValue;
+  setSelectedBeat(numberArray: number) {
+    const index = numberArray - 1;
+    const beat = BEATS[index];
+
+    if (beat !== undefined) {
+      this._selectedValue = beat;
+      this.selectedBeat.next(beat);
+    }
   }
 
-  set selectedValue(value: Beat) {
-    this._selectedValue = value;
+  getSelectedBeat() {
+    return this.selectedBeat.asObservable();
+  }
+
+  next() {
+    const index = this.getIndexOfSelected();
+
+    if (index !== undefined) {
+      const numberArray = index + 1;
+      this.setSelectedBeat(numberArray + 1);
+    }
+  }
+
+  prev() {
+    const index = this.getIndexOfSelected();
+
+    if (index !== undefined) {
+      const numberArray = index + 1;
+      this.setSelectedBeat(numberArray - 1);
+    }
+  }
+
+  private getIndexOfSelected() {
+    return BEATS.findIndex((obj) => {
+      return obj.id === this._selectedValue.id;
+    });
   }
 }

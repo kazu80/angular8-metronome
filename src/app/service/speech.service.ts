@@ -31,11 +31,13 @@ export class SpeechService {
 
     const speechRecognition = webkitSpeechRecognition || SpeechRecognition;
     this.speech = new speechRecognition();
-    // this.speech.lang = 'en-US';
-    this.speech.lang = 'ja-JP';
+    this.speech.lang = 'en-US';
+    // this.speech.lang = 'ja-JP';
     this.speech.onresult = this.onSpeechResult.bind(this);
     this.speech.onspeechend = this.onSpeechEnd;
     this.speech.onerror = this.onSpeechError;
+    this.speech.continuous = false;
+    this.speech.onend = this.onEnd.bind(this);
   }
 
   onSpeechResult(event: SpeechRecognitionEvent) {
@@ -62,6 +64,13 @@ export class SpeechService {
     console.error(event);
   }
 
+  onEnd(e) {
+    if (this.speech.state === undefined) {
+      this.speech.start();
+    }
+    this.state = LISTENING_STATE.IDLE;
+  }
+
   setResult(value) {
     this.result.next(value);
   }
@@ -74,7 +83,9 @@ export class SpeechService {
     if (this.state === LISTENING_STATE.LISTENING) { return; }
 
     this.state = LISTENING_STATE.LISTENING;
-    this.speech.start();
+    if (this.speech.state === 'idle' || this.speech.state === undefined ) {
+      this.speech.start();
+    }
   }
 
   public stopListening() {
