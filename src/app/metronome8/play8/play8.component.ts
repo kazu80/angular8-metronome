@@ -1,4 +1,6 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
+import {BeatService} from "../../service/beat.service";
+import {TempoService} from "../../service/tempo.service";
 
 declare var PIXI: any;
 
@@ -18,7 +20,14 @@ export class Play8Component implements OnInit {
 
   private app: any;
 
-  constructor(el: ElementRef) {
+  private handleTicker: any;
+  private ticker: any;
+
+  constructor(
+      el: ElementRef,
+      private beatService: BeatService,
+      private tempoService: TempoService
+  ) {
     this.dom = el.nativeElement;
 
     this.displayHeight = window.innerHeight - 67;
@@ -44,8 +53,7 @@ export class Play8Component implements OnInit {
       fill: 'white',
     });
 
-
-    this.text01 = new PIXI.Text('BEAT', style01);
+    this.text01 = new PIXI.Text('TEMPO', style01);
     this.text01.alpha = 1;
     // this.text01.filters = [filterBlur];
     this.app.stage.addChild(this.text01);
@@ -55,7 +63,7 @@ export class Play8Component implements OnInit {
     this.text01.anchor.x = 0.5;
     this.text01.anchor.y = 0.5;
 
-    // Text01
+    // Text02
     const style02 = new PIXI.TextStyle({
       fontFamily: 'Noto Sans JP',
       fontSize: 220,
@@ -73,6 +81,39 @@ export class Play8Component implements OnInit {
     this.text02.y = this.app.renderer.height / 2 - 30;
     this.text02.anchor.x = 0.5;
     this.text02.anchor.y = 0.5;
+
+    //
+    this.ticker = this.app.ticker;
+    this.tempoService.getTempo().subscribe(val => {
+
+      this.handleTicker = (delta) => {
+        const num: string = this.text02.text;
+
+        let tempoValue = Number(num);
+
+        if (tempoValue < val) {
+          tempoValue++;
+        } else {
+          tempoValue--;
+        }
+
+        if (tempoValue === val) {
+          this.ticker.remove(this.handleTicker);
+        }
+
+        this.text02.text = tempoValue.toString();
+      };
+
+      this.ticker.add(this.handleTicker);
+    });
   }
 
+  tempoUp() {
+    // this.tempoService.inclementTempo();
+    this.tempoService.tempo = 255;
+  }
+
+  play() {
+
+  }
 }
