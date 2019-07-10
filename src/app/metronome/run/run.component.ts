@@ -73,6 +73,11 @@ export class RunComponent implements OnInit {
         this.beatService.getSelectedBeat().subscribe((value: Beat) => {
             this.beat = value;
         });
+
+        this.tempo = this.tempoService.tempo;
+        this.tempoService.getTempo().subscribe(value => {
+            this.tempo = value;
+        });
     }
 
     private onClick() {
@@ -114,20 +119,18 @@ export class RunComponent implements OnInit {
         // ビート
         const beatCount: number = this.beat.beat;
 
-        // テンポ
-        this.tempo = this.tempoService.tempo;
-
         // 音量設定（Gain）
         this.setUpGain(this.contextTempo, sourceTempo);
         this.setUpGain(this.contextBeat, sourceBeat);
 
         // Run
         let count: any = 1;
-        let countBeat = 1;
+        // let countBeat = 1;
         this.interval = setInterval(() => {
             count % this.beat.beat === 0 ? this.audioBeat.play() : this.audioTempo.play();
             count++;
 
+            /*
             let isThree = false;
             if (countBeat % 3 === 0) {
                 isThree = true;
@@ -142,6 +145,8 @@ export class RunComponent implements OnInit {
                 this.voiceService.speak(countBeat.toString(), isThree ? 2 : 0, 'rand');
                 countBeat++;
             }
+
+           */
 
 
             // tempo counter

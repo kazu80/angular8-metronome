@@ -3,25 +3,25 @@ import {Beat, BeatService} from '../../service/beat.service';
 import {MetronomeCommon} from '../../common/metronome.common';
 
 @Component({
-  selector: 'app-beat',
-  templateUrl: './beat.component.html',
-  styleUrls: ['./beat.component.scss']
+    selector: 'app-beat',
+    templateUrl: './beat.component.html',
+    styleUrls: ['./beat.component.scss']
 })
 export class BeatComponent implements OnInit, AfterViewInit {
-  beats: Beat[];
-  selectedBeat: Beat;
+    beats: Beat[];
+    selectedBeat: Beat;
 
-  constructor(private common: MetronomeCommon,
-              private beatService: BeatService) {
+    constructor(private common: MetronomeCommon,
+                private beatService: BeatService) {
 
-      this.beatService.getSelectedBeat().subscribe((value: Beat) => {
-      this.selectedBeat = value;
-    });
-  }
+        this.beatService.getSelectedBeat().subscribe((value: Beat) => {
+            this.selectedBeat = value;
+        });
+    }
 
-  ngOnInit() {
-      this.beats = BeatService.getValues();
-  }
+    ngOnInit() {
+        this.beats = BeatService.getValues();
+    }
 
     ngAfterViewInit(): void {
         setTimeout(() => {
@@ -29,14 +29,14 @@ export class BeatComponent implements OnInit, AfterViewInit {
         });
     }
 
-  private onClick(type: string) {
-    switch (type) {
-      case 'prev':
-          this.beatService.prev();
-          break;
-      case 'next':
-          this.beatService.next();
-        break;
+    private onClick(type: string) {
+        switch (type) {
+            case 'prev':
+                this.beatService.prev();
+                break;
+            case 'next':
+                this.beatService.next();
+                break;
+        }
     }
-  }
 }
