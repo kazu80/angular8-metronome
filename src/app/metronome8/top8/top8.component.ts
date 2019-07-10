@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
 
 declare var PIXI: any;
@@ -8,13 +8,14 @@ declare var PIXI: any;
     templateUrl: './top8.component.html',
     styleUrls: ['./top8.component.scss']
 })
-export class Top8Component implements OnInit {
+export class Top8Component implements OnInit, OnDestroy {
     private dom: HTMLElement;
 
     private displayHeight: number;
     private displayWidth: number;
     private displayColor: string;
     private logoImagePath: string;
+    private bgmPath: string;
 
     private scene: Subject<number>;
     private app: any;
@@ -24,6 +25,7 @@ export class Top8Component implements OnInit {
     private ticker: any;
     private handleTicker: object;
     private sceneTime: number;
+    private sound: any;
 
     constructor(el: ElementRef) {
         this.scene = new Subject();
@@ -35,8 +37,9 @@ export class Top8Component implements OnInit {
         this.displayColor = '0xf2f2f2';
 
         this.logoImagePath = '/assets/images/angular8/logo.png';
+        this.bgmPath = '/assets/sound/bgm.mp3';
 
-        this.sceneTime = 3000;
+        this.sceneTime = 10000;
     }
 
     ngOnInit() {
@@ -57,17 +60,25 @@ export class Top8Component implements OnInit {
                 case 5:
                     this.scene5();
                     break;
+                case 6:
+                    this.scene6();
+                    break;
             }
         });
 
         this.initializeAnime();
     }
 
+    ngOnDestroy(): void {
+        if (this.sound && this.sound.isPlaying === true) {
+            this.sound.stop();
+            this.sound = undefined;
+        }
+
+        this.handleTicker = undefined;
+    }
+
     initializeAnime() {
-        const sound = PIXI.sound.Sound.from('/assets/sound/bgm.mp3');
-        sound.play();
-
-
         const filterBlur = new PIXI.filters.BlurFilter();
 
         this.app = new PIXI.Application({
@@ -78,17 +89,29 @@ export class Top8Component implements OnInit {
 
         this.dom.querySelector('#display').appendChild(this.app.view);
 
-        this.app.loader.add('logo', this.logoImagePath).load(
-            (loader, resorces) => {
-                this.logo = new PIXI.Sprite(resorces.logo.texture);
+        this.sound = PIXI.sound.Sound.from({
+            url: this.bgmPath,
+            singleInstance: true,
+            preload: true,
+            speed: 1.3,
+            loaded: (err, sound) => {
 
-                this.logo.filters = [filterBlur];
+                this.app.loader.add('logo', this.logoImagePath).load(
+                    (loader, resorces) => {
+                        this.logo = new PIXI.Sprite(resorces.logo.texture);
 
-                this.app.stage.addChild(this.logo);
+                        this.logo.filters = [filterBlur];
 
-                this.scene.next(1);
+                        this.app.stage.addChild(this.logo);
+
+                        this.scene.next(1);
+                    }
+                );
+            },
+            complete: () => {
+                this.scene.next(6);
             }
-        );
+        });
 
         // Text01
         const style01 = new PIXI.TextStyle({
@@ -115,6 +138,14 @@ export class Top8Component implements OnInit {
     }
 
     scene1() {
+        if (this.sound.isPlaying === false) {
+            this.sound.play();
+        }
+
+        setTimeout(() => {
+            this.scene.next(2);
+        }, 5000);
+
         const filter = this.logo.filters[0];
         filter.blur = 10;
 
@@ -128,8 +159,6 @@ export class Top8Component implements OnInit {
         this.logo.scale.y = 1;
 
         this.logo.alpha = 0;
-
-        this.scene.next(2);
 
         // text01
         this.text01.x = this.app.renderer.width / 2;
@@ -289,5 +318,9 @@ export class Top8Component implements OnInit {
         };
 
         this.ticker.add(this.handleTicker);
+    }
+
+    scene6() {
+
     }
 }
