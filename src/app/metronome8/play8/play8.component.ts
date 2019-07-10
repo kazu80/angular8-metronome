@@ -1,6 +1,7 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
 import {BeatService} from "../../service/beat.service";
 import {TempoService} from "../../service/tempo.service";
+import {RunService} from "../../service/run.service";
 
 declare var PIXI: any;
 
@@ -26,7 +27,8 @@ export class Play8Component implements OnInit {
   constructor(
       el: ElementRef,
       private beatService: BeatService,
-      private tempoService: TempoService
+      private tempoService: TempoService,
+      private runService: RunService
   ) {
     this.dom = el.nativeElement;
 
@@ -114,6 +116,10 @@ export class Play8Component implements OnInit {
   }
 
   play() {
+    this.runService.start();
+  }
 
+  stop() {
+    this.runService.stop();
   }
 }

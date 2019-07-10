@@ -19,6 +19,7 @@ export class SoundService {
   private _recording: string;
 
   constructor() {
+    this._selectedValue = SOUNDS[0];
   }
 
   get selectedValue(): Sound {

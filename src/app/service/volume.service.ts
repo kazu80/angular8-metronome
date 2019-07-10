@@ -24,6 +24,7 @@ export class VolumeService {
   private _selectedValue: any;
 
   constructor() {
+    this._selectedValue = VOLUMES[4];
   }
 
   get selectedValue(): any {

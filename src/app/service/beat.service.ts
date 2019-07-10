@@ -23,11 +23,16 @@ export class BeatService {
   private selectedBeat: Subject<Beat>;
 
   constructor() {
+    this._selectedValue = BEATS[3];
     this.selectedBeat = new Subject();
   }
 
   static getValues(): Beat[] {
     return BEATS;
+  }
+
+  get selectedValue(): Beat {
+    return this._selectedValue;
   }
 
   setSelectedBeat(numberArray: number) {
