@@ -46,6 +46,7 @@ export class Play8Component implements OnInit {
     this.dom.querySelector('#display').appendChild(this.app.view);
 
     const filterBlur = new PIXI.filters.BlurFilter();
+    filterBlur.blur = 10;
 
     // Text01
     const style01 = new PIXI.TextStyle({
@@ -56,8 +57,8 @@ export class Play8Component implements OnInit {
     });
 
     this.text01 = new PIXI.Text('TEMPO', style01);
-    this.text01.alpha = 1;
-    // this.text01.filters = [filterBlur];
+    this.text01.alpha = 0;
+    this.text01.filters = [filterBlur];
     this.app.stage.addChild(this.text01);
 
     this.text01.x = this.app.renderer.width / 2;
@@ -75,8 +76,8 @@ export class Play8Component implements OnInit {
 
 
     this.text02 = new PIXI.Text('80', style02);
-    this.text02.alpha = 1;
-    // this.text01.filters = [filterBlur];
+    this.text02.alpha = 0;
+    this.text02.filters = [filterBlur];
     this.app.stage.addChild(this.text02);
 
     this.text02.x = this.app.renderer.width / 2;
@@ -121,5 +122,63 @@ export class Play8Component implements OnInit {
 
   stop() {
     this.runService.stop();
+  }
+
+  displayTempo() {
+    const filter01 = this.text01.filters[0];
+    const filter02 = this.text02.filters[0];
+
+    this.handleTicker = (delta) => {
+      if (this.text01.alpha < 1) {
+        this.text01.alpha += 0.02;
+      }
+
+      if (this.text02.alpha < 1) {
+        this.text02.alpha += 0.02;
+      }
+
+      if (filter01.blur > 0) {
+        filter01.blur -= 0.1;
+      }
+
+      if (filter02.blur > 0) {
+        filter02.blur -= 0.1;
+      }
+
+      if (this.text01.alpha >= 1  && filter01.blur <= 0) {
+        this.ticker.remove(this.handleTicker);
+      }
+    };
+
+    this.ticker.add(this.handleTicker);
+  }
+
+  disappearTempo() {
+    const filter01 = this.text01.filters[0];
+    const filter02 = this.text02.filters[0];
+
+    this.handleTicker = (delta) => {
+      if (this.text01.alpha > 0) {
+        this.text01.alpha -= 0.06;
+      }
+
+      if (this.text02.alpha > 0) {
+        this.text02.alpha -= 0.06;
+      }
+
+      if (filter01.blur < 10) {
+        filter01.blur += 0.3;
+      }
+
+      if (filter02.blur < 10) {
+        filter02.blur += 0.3;
+      }
+
+      if (this.text01.alpha <= 0  && filter01.blur >= 10) {
+        this.ticker.remove(this.handleTicker);
+      }
+    };
+
+    this.ticker.add(this.handleTicker);
   }
 }
