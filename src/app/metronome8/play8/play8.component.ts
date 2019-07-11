@@ -20,6 +20,8 @@ export class Play8Component implements OnInit {
 
   private text01: any;
   private text02: any;
+  private textPlay: any;
+  private textStop: any;
 
   private app: any;
 
@@ -59,7 +61,7 @@ export class Play8Component implements OnInit {
     filterBlur.blur = 10;
 
     // Text "TEMPO"
-    this.text01 = this.displayText('TEMPO', {
+    this.text01 = this.createText('TEMPO', {
       fontFamily: 'Noto Sans JP',
       fontSize: 60,
       fontWeight: '700',
@@ -69,7 +71,7 @@ export class Play8Component implements OnInit {
     this.app.stage.addChild(this.text01);
 
     // Text "80"
-    this.text02 = this.displayText('80', {
+    this.text02 = this.createText('80', {
       fontFamily: 'Noto Sans JP',
       fontSize: 220,
       fontWeight: '700',
@@ -81,8 +83,31 @@ export class Play8Component implements OnInit {
     // Text "80" change
     this.numberChange();
 
+    // Text Play
+    this.textPlay = this.createText('PLAY', {
+      fontFamily: 'Noto Sans JP',
+      fontSize: 80,
+      fontWeight: '700',
+      fill: '#ccffcc',
+    });
+    this.textPlay.y = this.app.renderer.height / 2;
+    this.app.stage.addChild(this.textPlay);
+
+    // Text Stop
+    this.textStop = this.createText('STOP', {
+      fontFamily: 'Noto Sans JP',
+      fontSize: 80,
+      fontWeight: '700',
+      fill: '#ffcccc',
+    });
+    this.textStop.y = this.app.renderer.height / 2;
+    this.app.stage.addChild(this.textStop);
+
     // SPEECH
     this.speechInit();
+
+    // Display PLAY
+    this.appearText(this.textPlay);
   }
 
   numberChange() {
@@ -112,7 +137,7 @@ export class Play8Component implements OnInit {
     });
   }
 
-  displayText(val: string, style: object) {
+  createText(val: string, style: object) {
     const filterBlur = new PIXI.filters.BlurFilter();
     filterBlur.blur = 10;
 
@@ -181,11 +206,55 @@ export class Play8Component implements OnInit {
   }
 
   play() {
+    this.disappearText(this.textPlay);
+    this.appearText(this.textStop);
     this.runService.start();
   }
 
   stop() {
+    this.disappearText(this.textStop);
+    this.appearText(this.textPlay);
     this.runService.stop();
+  }
+
+  appearText(text: any): void {
+    const filter = text.filters[0];
+
+    const handleTicker = (delta) => {
+      if (text.alpha < 1) {
+        text.alpha += 0.02;
+      }
+
+      if (filter.blur > 0) {
+        filter.blur -= 0.1;
+      }
+
+      if (text.alpha >= 1  && filter.blur <= 0) {
+        this.ticker.remove(handleTicker);
+      }
+    };
+
+    this.ticker.add(handleTicker);
+  }
+
+  disappearText(text: any): void {
+    const filter = text.filters[0];
+
+    const handleTicker = (delta) => {
+      if (text.alpha > 0) {
+        text.alpha -= 0.06;
+      }
+
+      if (filter.blur < 10) {
+        filter.blur += 0.3;
+      }
+
+      if (text.alpha <= 0  && filter.blur >= 10) {
+        this.ticker.remove(handleTicker);
+      }
+    };
+
+    this.ticker.add(handleTicker);
   }
 
   displayTempo() {
@@ -195,32 +264,14 @@ export class Play8Component implements OnInit {
 
     this.isTempo = true;
 
-    const filter01 = this.text01.filters[0];
-    const filter02 = this.text02.filters[0];
+    // メトロノームを止める
+    this.runService.stop();
 
-    this.handleTicker = (delta) => {
-      if (this.text01.alpha < 1) {
-        this.text01.alpha += 0.02;
-      }
+    this.disappearText(this.textPlay);
+    this.disappearText(this.textStop);
 
-      if (this.text02.alpha < 1) {
-        this.text02.alpha += 0.02;
-      }
-
-      if (filter01.blur > 0) {
-        filter01.blur -= 0.1;
-      }
-
-      if (filter02.blur > 0) {
-        filter02.blur -= 0.1;
-      }
-
-      if (this.text01.alpha >= 1  && filter01.blur <= 0) {
-        this.ticker.remove(this.handleTicker);
-      }
-    };
-
-    this.ticker.add(this.handleTicker);
+    this.appearText(this.text01);
+    this.appearText(this.text02);
   }
 
   disappearTempo() {
@@ -230,32 +281,9 @@ export class Play8Component implements OnInit {
 
     this.isTempo = false;
 
-    const filter01 = this.text01.filters[0];
-    const filter02 = this.text02.filters[0];
-
-    this.handleTicker = (delta) => {
-      if (this.text01.alpha > 0) {
-        this.text01.alpha -= 0.06;
-      }
-
-      if (this.text02.alpha > 0) {
-        this.text02.alpha -= 0.06;
-      }
-
-      if (filter01.blur < 10) {
-        filter01.blur += 0.3;
-      }
-
-      if (filter02.blur < 10) {
-        filter02.blur += 0.3;
-      }
-
-      if (this.text01.alpha <= 0  && filter01.blur >= 10) {
-        this.ticker.remove(this.handleTicker);
-      }
-    };
-
-    this.ticker.add(this.handleTicker);
+    this.appearText(this.textPlay);
+    this.disappearText(this.text01);
+    this.disappearText(this.text02);
   }
 
   mouseup(): void {
