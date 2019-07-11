@@ -92,7 +92,7 @@ export class Play8Component implements OnInit {
       fontWeight: '700',
       fill: '#ccffcc',
     });
-    this.textPlay.y = this.app.renderer.height / 2;
+    this.textPlay.y = this.app.renderer.height / 2 + 80;
     this.app.stage.addChild(this.textPlay);
 
     // Text Stop
@@ -102,7 +102,7 @@ export class Play8Component implements OnInit {
       fontWeight: '700',
       fill: '#ffcccc',
     });
-    this.textStop.y = this.app.renderer.height / 2;
+    this.textStop.y = this.app.renderer.height / 2 + 80;
     this.app.stage.addChild(this.textStop);
 
     // Speech Text
@@ -374,7 +374,7 @@ export class Play8Component implements OnInit {
     this.disappearText(this.textStop);
 
     this.voiceService.speak('テンポを変更しますか？');
-    this.appearTextLib02(this.textTranslate, 'Do you want change tempo?');
+    this.appearTextLib02(this.textTranslate, 'Do you want change tempo ?');
 
     this.appearText(this.text01);
     this.appearText(this.text02);

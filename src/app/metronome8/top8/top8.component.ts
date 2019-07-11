@@ -23,6 +23,7 @@ export class Top8Component implements OnInit, OnDestroy {
     private logo: any;
     private text01: any;
     private text02: any;
+    private text03: any;
     private ticker: any;
     private handleTicker: object;
     private sceneTime: number;
@@ -43,7 +44,7 @@ export class Top8Component implements OnInit, OnDestroy {
         this.logoImagePath = '/assets/images/angular8/logo.png';
         this.bgmPath = '/assets/sound/bgm.mp3';
 
-        this.sceneTime = 10000;
+        this.sceneTime = 6500;
     }
 
     ngOnInit() {
@@ -66,6 +67,12 @@ export class Top8Component implements OnInit, OnDestroy {
                     break;
                 case 6:
                     this.scene6();
+                    break;
+                case 7:
+                    this.scene7();
+                    break;
+                case 8:
+                    this.scene8();
                     break;
             }
         });
@@ -139,6 +146,17 @@ export class Top8Component implements OnInit, OnDestroy {
         this.text02.filters = [filterBlur];
         this.text02.alpha = 0;
         this.app.stage.addChild(this.text02);
+
+        // Text03
+        const style03 = new PIXI.TextStyle({
+            fontFamily: 'Noto Sans JP',
+            fontSize: 70,
+            fontWeight: '400',
+        });
+        this.text03 = new PIXI.Text('METRONOME', style03);
+        this.text03.filters = [filterBlur];
+        this.text03.alpha = 0;
+        this.app.stage.addChild(this.text03);
     }
 
     scene1() {
@@ -177,6 +195,13 @@ export class Top8Component implements OnInit, OnDestroy {
         this.text02.anchor.x = 0.5;
         this.text02.anchor.y = 0.5;
         this.text02.alpha = 0;
+
+        // text03
+        this.text03.x = this.app.renderer.width / 2;
+        this.text03.y = this.app.renderer.height / 2 - 20;
+        this.text03.anchor.x = 0.5;
+        this.text03.anchor.y = 0.5;
+        this.text03.alpha = 0;
     }
 
 
@@ -230,7 +255,7 @@ export class Top8Component implements OnInit, OnDestroy {
                 this.ticker.remove(this.handleTicker);
 
                 setTimeout(() => {
-                    this.scene.next(4);
+                    this.scene.next(7);
                 }, this.sceneTime);
             }
         };
@@ -238,6 +263,7 @@ export class Top8Component implements OnInit, OnDestroy {
         this.ticker.add(this.handleTicker);
     }
 
+    // PRODUCED BY
     scene4() {
         this.ticker = this.app.ticker;
         const filter01 = this.text01.filters[0];
@@ -326,5 +352,63 @@ export class Top8Component implements OnInit, OnDestroy {
 
     scene6() {
         this.router.navigate(['/version8/play']);
+    }
+
+    scene7() {
+        this.ticker = this.app.ticker;
+        const filter = this.text03.filters[0];
+
+        this.handleTicker = (delta) => {
+            if (this.text03.scale.x > 1) {
+                this.text03.scale.x -= 0.05;
+                this.text03.scale.y -= 0.05;
+            }
+
+            if (this.text03.alpha < 1) {
+                this.text03.alpha += 0.2;
+            }
+
+            if (filter.blur > 0) {
+                filter.blur -= 0.4;
+            }
+
+            if (this.text03.alpha >= 1 && filter.blur <= 0) {
+                this.ticker.remove(this.handleTicker);
+                setTimeout(() => {
+                    this.scene.next(8);
+                }, this.sceneTime);
+            }
+        };
+
+        this.ticker.add(this.handleTicker);
+    }
+
+    scene8() {
+        const filter = this.text03.filters[0];
+
+        this.handleTicker = (delta) => {
+            if (this.text03.scale.x < 1) {
+                this.text03.scale.x += 0.05;
+                this.text03.scale.y += 0.05;
+            }
+
+            if (this.text03.alpha > 0) {
+                this.text03.alpha -= 0.1;
+            }
+
+            if (filter.blur < 10) {
+                filter.blur += 2;
+            }
+
+            if (this.text03.alpha <= 0) {
+                this.ticker.remove(this.handleTicker);
+
+                setTimeout(() => {
+                    this.scene.next(4);
+                }, 4000);
+            }
+        };
+
+        this.ticker.add(this.handleTicker);
     }
 }
