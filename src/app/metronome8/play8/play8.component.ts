@@ -1,9 +1,9 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
-import {BeatService} from "../../service/beat.service";
-import {TempoService} from "../../service/tempo.service";
-import {RunService} from "../../service/run.service";
-import {SpeechResult, SpeechService} from "../../service/speech.service";
-import {VoiceService} from "../../service/voice.service";
+import {BeatService} from '../../service/beat.service';
+import {TempoService} from '../../service/tempo.service';
+import {RunService} from '../../service/run.service';
+import {SpeechResult, SpeechService} from '../../service/speech.service';
+import {VoiceService} from '../../service/voice.service';
 
 declare var PIXI: any;
 
@@ -22,6 +22,7 @@ export class Play8Component implements OnInit {
   private text02: any;
   private textPlay: any;
   private textStop: any;
+  private textSpeech: any;
 
   private app: any;
 
@@ -102,6 +103,20 @@ export class Play8Component implements OnInit {
     });
     this.textStop.y = this.app.renderer.height / 2;
     this.app.stage.addChild(this.textStop);
+
+    // Speech Text
+    this.textSpeech = this.createText('foo', {
+      fontFamily: 'Noto Sans JP',
+      fontSize: 50,
+      fontWeight: '700',
+      fill: 'white',
+    });
+    this.textSpeech.x = 40;
+    this.textSpeech.y = this.app.renderer.height - 100;
+    this.textSpeech.anchor.x = 0;
+    this.textSpeech.anchor.y = 0;
+
+    this.app.stage.addChild(this.textSpeech);
 
     // SPEECH
     this.speechInit();
@@ -237,6 +252,31 @@ export class Play8Component implements OnInit {
     this.ticker.add(handleTicker);
   }
 
+  appearTextLib01(text: any, displayText: string): void {
+    const filter = text.filters[0];
+    filter.blur = 0;
+    text.alpha = 1;
+
+    text.text = '"';
+    let i = 0;
+    const handleTicker = (delta) => {
+
+      const displayChar = displayText.substr(i, 1);
+      text.text += displayChar;
+
+      if (text.text.length >= displayText.length) {
+        text.text += '" 🤔';
+        this.ticker.remove(handleTicker);
+      }
+
+      i++;
+    };
+
+    this.ticker.add(handleTicker);
+
+    setTimeout(() => text.alpha = 0, 2000);
+  }
+
   disappearText(text: any): void {
     const filter = text.filters[0];
 
@@ -296,6 +336,6 @@ export class Play8Component implements OnInit {
   }
 
   question(val: string) {
-
+    this.appearTextLib01(this.textSpeech, val);
   }
 }
