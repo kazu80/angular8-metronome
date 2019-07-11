@@ -23,6 +23,7 @@ export class Play8Component implements OnInit {
   private textPlay: any;
   private textStop: any;
   private textSpeech: any;
+  private textTranslate: any;
 
   private app: any;
 
@@ -105,7 +106,7 @@ export class Play8Component implements OnInit {
     this.app.stage.addChild(this.textStop);
 
     // Speech Text
-    this.textSpeech = this.createText('foo', {
+    this.textSpeech = this.createText('', {
       fontFamily: 'Noto Sans JP',
       fontSize: 50,
       fontWeight: '700',
@@ -115,8 +116,20 @@ export class Play8Component implements OnInit {
     this.textSpeech.y = this.app.renderer.height - 100;
     this.textSpeech.anchor.x = 0;
     this.textSpeech.anchor.y = 0;
-
     this.app.stage.addChild(this.textSpeech);
+
+    // Translate Text
+    this.textTranslate = this.createText('', {
+      fontFamily: 'Arial',
+      fontSize: 36,
+      fontWeight: '700',
+      fill: 'white',
+    });
+    this.textTranslate.x = 40;
+    this.textTranslate.y = this.app.renderer.height - 100;
+    this.textTranslate.anchor.x = 0;
+    this.textTranslate.anchor.y = 0;
+    this.app.stage.addChild(this.textTranslate);
 
     // SPEECH
     this.speechInit();
@@ -172,9 +185,14 @@ export class Play8Component implements OnInit {
     this.speechService.getResult().subscribe((res: SpeechResult) => {
       console.log(res);
       switch (res.speechResult) {
-        case 'hello':
+        case 'metronome':
+          this.voiceService.speak('はい、わたしです。');
+          this.appearTextLib02(this.textTranslate, 'Yes, I am');
+          break;
 
-          this.voiceService.speak('こんにちわ');
+        case 'OK Google':
+          this.voiceService.speak('誰かと間違っていませんか？わたしは、メトロノームです');
+          this.appearTextLib02(this.textTranslate, 'Are you wrong with something? I am metronome');
           break;
 
         case 'temp':
@@ -187,6 +205,8 @@ export class Play8Component implements OnInit {
           this.disappearTempo();
           break;
 
+        case 'Gray':
+        case 'today':
         case 'play':
           this.play();
           break;
@@ -197,18 +217,28 @@ export class Play8Component implements OnInit {
 
         case 'up':
           if (this.isTempo === true && this.tempoService.tempo < 245) {
+            this.voiceService.speak('テンポを上げました');
+            this.appearTextLib02(this.textTranslate, 'I made the tempo up');
             this.tempoService.tempo += 10;
           }
           break;
 
         case 'down':
           if (this.isTempo === true && this.tempoService.tempo > 10) {
+            this.voiceService.speak('テンポを下げました');
+            this.appearTextLib02(this.textTranslate, 'I made the tempo down');
             this.tempoService.tempo -= 10;
           }
           break;
 
+        case 'thank you':
+          this.voiceService.speak('みなさま、ご聴取いただきありがとうございました。また、どこかで会いましょうね。メトロノームのシールもらってかえってね！');
+          this.appearTextLib02(this.textTranslate, 'Thank you for listening. See you again. Get Metronome Sticker');
+          break;
+
         default:
           this.question(res.speechResult);
+          setTimeout(() => this.voiceService.speak('すみません。よくわかりません'), 800);
           break;
       }
 
@@ -222,14 +252,22 @@ export class Play8Component implements OnInit {
 
   play() {
     this.disappearText(this.textPlay);
-    this.appearText(this.textStop);
-    this.runService.start();
+    this.voiceService.speak('メトロノームはじめます');
+    this.appearTextLib02(this.textTranslate, 'I will start metronome.');
+
+    setTimeout(() => {
+      this.appearText(this.textStop);
+      this.runService.start();
+    }, 1500);
   }
 
   stop() {
     this.disappearText(this.textStop);
     this.appearText(this.textPlay);
     this.runService.stop();
+
+    this.voiceService.speak('メトロノームを止めました');
+    this.appearTextLib02(this.textTranslate, 'I stopped metronome.');
   }
 
   appearText(text: any): void {
@@ -274,8 +312,33 @@ export class Play8Component implements OnInit {
 
     this.ticker.add(handleTicker);
 
-    setTimeout(() => text.alpha = 0, 2000);
+    setTimeout(() => text.alpha = 0, 5000);
   }
+
+  appearTextLib02(text: any, displayText: string): void {
+    const filter = text.filters[0];
+    filter.blur = 0;
+    text.alpha = 1;
+
+    text.text = '🙋 ';
+    let i = 0;
+    const handleTicker = (delta) => {
+
+      const displayChar = displayText.substr(i, 1);
+      text.text += displayChar;
+
+      if (text.text.length >= displayText.length + 2) {
+        this.ticker.remove(handleTicker);
+      }
+
+      i++;
+    };
+
+    this.ticker.add(handleTicker);
+
+    setTimeout(() => text.alpha = 0, 5000);
+  }
+
 
   disappearText(text: any): void {
     const filter = text.filters[0];
@@ -310,6 +373,9 @@ export class Play8Component implements OnInit {
     this.disappearText(this.textPlay);
     this.disappearText(this.textStop);
 
+    this.voiceService.speak('テンポを変更しますか？');
+    this.appearTextLib02(this.textTranslate, 'Do you want change tempo?');
+
     this.appearText(this.text01);
     this.appearText(this.text02);
   }
@@ -332,6 +398,7 @@ export class Play8Component implements OnInit {
 
   mousedown(): void {
     PIXI.sound.play('speech');
+
     this.speechService.startListening();
   }
 
