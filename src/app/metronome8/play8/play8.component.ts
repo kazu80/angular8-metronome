@@ -186,6 +186,7 @@ export class Play8Component implements OnInit {
       console.log(res);
       switch (res.speechResult) {
         case 'metronome':
+        case 'Metro-Nort':
           this.voiceService.speak('はい、わたしです。');
           this.appearTextLib02(this.textTranslate, 'Yes, I am');
           break;
@@ -215,6 +216,7 @@ export class Play8Component implements OnInit {
           this.stop();
           break;
 
+        case 'app':
         case 'up':
           if (this.isTempo === true && this.tempoService.tempo < 245) {
             this.voiceService.speak('テンポを上げました');
@@ -252,6 +254,8 @@ export class Play8Component implements OnInit {
 
   play() {
     this.disappearText(this.textPlay);
+    this.disappearTempo();
+
     this.voiceService.speak('メトロノームはじめます');
     this.appearTextLib02(this.textTranslate, 'I will start metronome.');
 
@@ -263,6 +267,7 @@ export class Play8Component implements OnInit {
 
   stop() {
     this.disappearText(this.textStop);
+    this.disappearTempo();
     this.appearText(this.textPlay);
     this.runService.stop();
 
@@ -302,7 +307,7 @@ export class Play8Component implements OnInit {
       const displayChar = displayText.substr(i, 1);
       text.text += displayChar;
 
-      if (text.text.length >= displayText.length) {
+      if (text.text.length >= displayText.length + 1) {
         text.text += '" 🤔';
         this.ticker.remove(handleTicker);
       }
@@ -327,7 +332,7 @@ export class Play8Component implements OnInit {
       const displayChar = displayText.substr(i, 1);
       text.text += displayChar;
 
-      if (text.text.length >= displayText.length + 2) {
+      if (text.text.length >= displayText.length + 3) {
         this.ticker.remove(handleTicker);
       }
 
@@ -387,7 +392,6 @@ export class Play8Component implements OnInit {
 
     this.isTempo = false;
 
-    this.appearText(this.textPlay);
     this.disappearText(this.text01);
     this.disappearText(this.text02);
   }

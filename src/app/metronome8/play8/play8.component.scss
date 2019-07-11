@@ -29,6 +29,19 @@
   position: absolute;
   top: 15px;
   right: 15px;
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  background-image: url("/assets/images/angular8/speech-bubble.svg");
+  background-repeat: no-repeat;
+  background-size: 50px 50px;
+  background-position: center;
+
+  &:focus,
+  &:active {
+    outline: none;
+  }
+
 
   &.play {
     top: 60px;
@@ -43,6 +56,6 @@
   }
 
   &.speech {
-    top: 195px;
+    top: 20px;
   }
 }

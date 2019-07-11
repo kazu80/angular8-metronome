@@ -33,9 +33,9 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        width: 230px;
 
         .menu {
+            margin-right: 15px;
             height: 47px;
             width: 47px;
             border: 2px solid #313131;
@@ -43,6 +43,10 @@
             background-color: #fff;
             transition: opacity 0.15s ease-out;
             opacity: 1;
+
+            &:last-child {
+                margin-right: 0;
+            }
 
             &:hover {
                 opacity: .8;
