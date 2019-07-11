@@ -26,6 +26,8 @@ export class Play8Component implements OnInit {
   private handleTicker: any;
   private ticker: any;
 
+  private isTempo: boolean;
+
   constructor(
       el: ElementRef,
       private beatService: BeatService,
@@ -38,6 +40,10 @@ export class Play8Component implements OnInit {
 
     this.displayHeight = window.innerHeight - 67;
     this.displayWidth = window.innerWidth;
+
+    this.isTempo = false;
+
+    PIXI.sound.add('speech', '/assets/sound/btnSpeech.mp3');
   }
 
   ngOnInit() {
@@ -132,6 +138,7 @@ export class Play8Component implements OnInit {
           break;
 
         case 'temp':
+        case 'Temple':
           this.displayTempo();
           break;
 
@@ -146,6 +153,18 @@ export class Play8Component implements OnInit {
 
         case 'stop':
           this.stop();
+          break;
+
+        case 'up':
+          if (this.isTempo === true && this.tempoService.tempo < 245) {
+            this.tempoService.tempo += 10;
+          }
+          break;
+
+        case 'down':
+          if (this.isTempo === true && this.tempoService.tempo > 10) {
+            this.tempoService.tempo -= 10;
+          }
           break;
 
         default:
@@ -170,6 +189,12 @@ export class Play8Component implements OnInit {
   }
 
   displayTempo() {
+    if (this.isTempo === true) {
+      return;
+    }
+
+    this.isTempo = true;
+
     const filter01 = this.text01.filters[0];
     const filter02 = this.text02.filters[0];
 
@@ -199,6 +224,12 @@ export class Play8Component implements OnInit {
   }
 
   disappearTempo() {
+    if (this.isTempo === false) {
+      return;
+    }
+
+    this.isTempo = false;
+
     const filter01 = this.text01.filters[0];
     const filter02 = this.text02.filters[0];
 
@@ -232,6 +263,7 @@ export class Play8Component implements OnInit {
   }
 
   mousedown(): void {
+    PIXI.sound.play('speech');
     this.speechService.startListening();
   }
 
